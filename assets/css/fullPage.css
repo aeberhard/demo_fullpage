@@ -1,5 +1,5 @@
 /*!
- * fullPage 2.9.4
+ * fullPage 2.9.6
  * https://github.com/alvarotrigo/fullPage.js
  * MIT licensed
  *
@@ -13,16 +13,6 @@ html.fp-enabled,
 
     /*Avoid flicker on slides transitions for mobile phones #336 */
     -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-#superContainer {
-    height: 100%;
-    position: relative;
-
-    /* Touch detection for Windows 8 */
-    -ms-touch-action: none;
-
-    /* IE 11 on Windows Phone 8.1*/
-    touch-action: none;
 }
 .fp-section {
     position: relative;
@@ -111,25 +101,27 @@ html.fp-enabled,
     -webkit-transform: translate3d(0,0,0);
 }
 #fp-nav.right {
-    right: 40px;
+    right: 17px;
 }
 #fp-nav.left {
-    left: 40px;
+    left: 17px;
 }
 .fp-slidesNav{
     position: absolute;
     z-index: 4;
-    left: 50%;
     opacity: 1;
     -webkit-transform: translate3d(0,0,0);
     -ms-transform: translate3d(0,0,0);
     transform: translate3d(0,0,0);
+    left: 0 !important;
+    right: 0;
+    margin: 0 auto !important;
 }
 .fp-slidesNav.bottom {
-    bottom: 40px;
+    bottom: 17px;
 }
 .fp-slidesNav.top {
-    top: 40px;
+    top: 17px;
 }
 #fp-nav ul,
 .fp-slidesNav ul {
