@@ -5,6 +5,8 @@ $buttons = '';
 
 $func = rex_request('func', 'string');
 
+$csrfToken = rex_csrf_token::factory('demo_fullpage');
+
 // Defaultwerte Konfiguration setzen
 if (!$this->hasConfig() or ($this->getConfig('theme') == '')) {
     $this->setConfig('theme', 'coffee');
@@ -22,7 +24,9 @@ if (!$this->hasConfig() or ($this->getConfig('theme') == '')) {
 }
 
 // Konfiguration speichern
-if ($func == 'update') {
+if ($func == 'update' && !$csrfToken->isValid()) {
+    echo rex_view::error(rex_i18n::msg('csrf_token_invalid'));
+} elseif ($func == 'update') {
 
     $this->setConfig(rex_post('settings', [
         ['theme', 'string'],
@@ -272,6 +276,7 @@ $content = $fragment->parse('core/page/section.php');
 $content = '
 <form action="' . rex_url::currentBackendPage() . '" method="post">
 <input type="hidden" name="func" value="update" />
+    ' . $csrfToken->getHiddenField() . '
     ' . $content . '
 </form>
 ';

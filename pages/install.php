@@ -1,10 +1,14 @@
 <?php
 
+$csrfToken = rex_csrf_token::factory('demo_fullpage');
+
 /** @var rex_addon $this */
 
 /* setup process */
 
-if (rex_post('install', 'boolean')) {
+if (rex_post('install', 'boolean') && !$csrfToken->isValid()) {
+    echo rex_view::error(rex_i18n::msg('csrf_token_invalid'));
+} elseif (rex_post('install', 'boolean')) {
 
     $errors = array();
 
@@ -117,7 +121,7 @@ if (rex_post('install', 'boolean')) {
                 $errors[] = $this->i18n('package_failed_to_import', $import);
             }
         }
-    }
+   }
 
     // step 5/5: import files
     if (count($this->getProperty('setup')['fileimport']) > 0 && count($errors) == 0) {
@@ -157,14 +161,20 @@ $fragment->setVar('body', $content, false);
 $content = $fragment->parse('core/page/section.php');
 $content = '
 <form action="' . rex_url::currentBackendPage() . '" method="post" data-confirm="Jetzt das Release zum veröffentlichen erstellen?">
+    ' . $csrfToken->getHiddenField() . '
     ' . $content . '
 </form>';
 
 // create release
-if (rex_post('release', 'boolean')) {
+if (rex_post('release', 'boolean') && !$csrfToken->isValid()) {
+    echo rex_view::error(rex_i18n::msg('csrf_token_invalid'));
+} elseif (rex_post('release', 'boolean')) {
     include(rex_path::addon($this->getName()).'release/release.php');
 }
-if (rex_post('git', 'boolean')) {
+// create git release
+if (rex_post('git', 'boolean') && !$csrfToken->isValid()) {
+    echo rex_view::error(rex_i18n::msg('csrf_token_invalid'));
+} elseif (rex_post('git', 'boolean')) {
     include(rex_path::addon($this->getName()).'release/git.php');
 }
 
@@ -185,6 +195,7 @@ $content = $fragment->parse('core/page/section.php');
 
 $content = '
 <form action="' . rex_url::currentBackendPage() . '" method="post" data-confirm="' . $this->i18n('confirm_setup') . '">
+    ' . $csrfToken->getHiddenField() . '
     ' . $content . '
 </form>';
 
