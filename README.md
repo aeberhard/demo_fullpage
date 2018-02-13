@@ -7,6 +7,10 @@ Die Fullpage-Demo für REDAXO demonstriert eine sogenannte "Onepage-Website". Di
 Die Fullpage-Demo für REDAXO ist völlig frei verwendbar, sowohl für private als auch für kommerzielle Projekte!
 Die Demo vermeidet ganz bewusst Abhängigkeiten von weiteren Addons und ist so einfach wie möglich gehalten.
 
+**Hinweis für Entwickler:**
+Das Addon aus github sollte zur Entwicklung in einer **eigenen** REDAXO-Instanz installiert werden!
+Zusätzlich noch das `developer-Addon` installieren!
+
 ## Verwendete Software
 
 * REDAXO - https://redaxo.org/
