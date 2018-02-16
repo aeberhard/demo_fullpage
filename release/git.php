@@ -27,6 +27,9 @@ $relparams->ignore_folders = ['vendor'];
 // Addon-Dateien die nicht übernommen werden sollen
 $relparams->ignore_files = ['actions/*.rex_id', 'actions/*metadata.yml', 'modules/*.rex_id', 'modules/*metadata.yml', 'templates/*.rex_id', 'templates/*metadata.yml'];
 
+// Tabellen die nicht exportiert werden sollen (array ohne TablePrefix)
+$relparams->ignore_tables = ['user', 'user_role', 'config'];
+
 // Pfad für die Exporte (Subdir von release_path)
 $relparams->export_path = 'backups/';
 // Name für sql-Export (ohne .sql)

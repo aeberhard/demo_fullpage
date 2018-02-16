@@ -34,6 +34,9 @@ class rex_addon_release_parameter
     // Addon-Dateien die nicht übernommen werden sollen
     public $ignore_files = [];
 
+    // Tabellen die nicht exportiert werden sollen (array ohne TablePrefix)
+    public $ignore_tables = ['user', 'user_role'];
+
     // Pfad für die Exporte (Subdir von release_path)
     public $export_path = 'backups/';
 
@@ -248,7 +251,21 @@ class rex_addon_release
 
     function exportSql($filename)
     {
-        return rex_backup::exportDb($filename);
+        $params = $this->params;
+        $tables = [];
+        foreach (rex_sql::showTables(1, rex::getTablePrefix()) as $table) {
+            // Tabellen die mit rex_tmp_ beginnnen, werden nicht exportiert!
+            if (substr($table, 0, strlen(rex::getTablePrefix() . rex::getTempPrefix())) != rex::getTablePrefix() . rex::getTempPrefix()) {
+                $tables[$table] = $table;
+            }
+        }
+        // Tabellen die nicht exportiert werden sollen
+        if (is_array($params->ignore_tables)) {
+            foreach ($params->ignore_tables as $table) {
+                unset($tables[rex::getTable($table)]);
+            }
+        }
+        return rex_backup::exportDb($filename, $tables);
     }
 
     function exportFiles($filename, $folders)
