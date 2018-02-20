@@ -34,15 +34,29 @@ echo implode(",\n", $opts) . "\n";
 
 <script src="<?php echo rex_url::base('assets/addons/demo_fullpage/themes/' . $fullpagedemo['theme'] . '/js/theme.js') ?>"></script>
 
-<div style="display:none;">REDAXO 5 really rocks!</div>
-<div class="for" title="FriendsOfREDAXO - TREX - Gojira"><a href="https://friendsofredaxo.github.io/" class="newwindow"></a></div>
+<?php
+// Theme-Switcher ausgeben
+if (rex_addon::get('demo_fullpage')->getConfig('themeswitch')) {
+    $_ts = '';
+    $_ts .= '<div class="for" title="FriendsOfREDAXO - TREX - Gojira"><a href="https://friendsofredaxo.github.io/" class="newwindow"></a></div>' . "\n\n";
 
-<ul class="styleswitch" title="Theme Switch">
-<li><a class="coffee" href="<?php echo rex::getServer(); ?>?theme=coffee" title="Theme coffee"></a></li>
-<li><a class="bike" href="<?php echo rex::getServer(); ?>?theme=bike" title="Theme bike"></a></li>
-<li><a class="road" href="<?php echo rex::getServer(); ?>?theme=road" title="Theme road"></a></li>
-<li><a class="minimal" href="<?php echo rex::getServer(); ?>?theme=minimal" title="Theme minimal"></a></li>
-</ul>
+    $_ts .= '<ul class="styleswitch" title="Theme Switch">' . "\n";
+    $myPath = rex_url::base('redaxo/src/addons/demo_fullpage/assets/themes/');
+    $directories = glob($myPath . '/*' , GLOB_ONLYDIR);
+    foreach ($directories as $dir) {
+        $dir = basename($dir);
+        if ($ff = file($myPath  .$dir . '/css/theme.css')) {
+            if (isset($ff[0]) and trim($ff[0]) == '/*' and isset($ff[3]) and trim($ff[3]) == '*/' and isset($ff[2])) {
+                $_ts .= '<li><a class="' . $dir . '" href="' . rex::getServer() . '?theme=' . $dir . '" title="' . trim($ff[2]) . '"></a></li>' . "\n";
+            }
+        }
+    }
+    $_ts .= '</ul>' . "\n";
+    echo $_ts;
+}
+?>
+
+<div style="display:none;">REDAXO 5 really rocks!</div>
 
 </body>
 </html>

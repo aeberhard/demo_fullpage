@@ -21,6 +21,7 @@ if (!$this->hasConfig() or ($this->getConfig('theme') == '')) {
     $this->setConfig('showslidenavigation', '0');
     $this->setConfig('slidenavigationposition', 'bottom');
     $this->setConfig('usesubcategories', '0');
+    $this->setConfig('themeswitch', '1');
 }
 
 // Konfiguration speichern
@@ -40,7 +41,8 @@ if ($func == 'update' && !$csrfToken->isValid()) {
         ['showslidearrows', 'string'],
         ['showslidenavigation', 'string'],
         ['slidenavigationposition', 'string'],
-        ['usesubcategories', 'string']
+        ['usesubcategories', 'string'],
+        ['themeswitch', 'string']
     ]));
 
     echo rex_view::success($this->i18n('config_saved'));
@@ -60,6 +62,7 @@ $Values['showslidearrows'] = $this->getConfig('showslidearrows');
 $Values['showslidenavigation'] = $this->getConfig('showslidenavigation');
 $Values['slidenavigationposition'] = $this->getConfig('slidenavigationposition');
 $Values['usesubcategories'] = $this->getConfig('usesubcategories');
+$Values['themeswitch'] = $this->getConfig('themeswitch');
 
 // Theme
 $formElements = [];
@@ -249,6 +252,17 @@ $formElements = [];
 $n = [];
 $n['label'] = '<label for="usesubcategories">' . htmlspecialchars_decode($this->i18n('config_usesubcategories')) . '</label>';
 $n['field'] = '<input type="checkbox" id="usesubcategories" name="settings[usesubcategories]"' . (!empty($Values['usesubcategories']) && $Values['usesubcategories'] == '1' ? ' checked="checked"' : '') . ' value="1" />';
+$formElements[] = $n;
+
+$fragment = new rex_fragment();
+$fragment->setVar('elements', $formElements, false);
+$content .= $fragment->parse('core/form/checkbox.php');
+
+// Theme-Switcher ausgeben
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="themeswitch">' . htmlspecialchars_decode($this->i18n('config_themeswitch')) . '</label>';
+$n['field'] = '<input type="checkbox" id="themeswitch" name="settings[themeswitch]"' . (!empty($Values['themeswitch']) && $Values['themeswitch'] == '1' ? ' checked="checked"' : '') . ' value="1" />';
 $formElements[] = $n;
 
 $fragment = new rex_fragment();
